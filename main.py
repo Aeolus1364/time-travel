@@ -1,7 +1,8 @@
 import pygame
 import player
-import test
-import settings
+import config
+import tile
+import room
 
 pygame.init()
 
@@ -42,7 +43,7 @@ class Main:
                         player.player.change_direction(self.direction_pressed)
 
                     if event.key == pygame.K_ESCAPE:
-                        settings.surface = pygame.display.set_mode((settings.display_x, settings.display_y))
+                        config.surface = pygame.display.set_mode((config.display_x, config.display_y))
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_w:
@@ -65,18 +66,21 @@ class Main:
                             self.direction_pressed = "none"
                         player.player.cancel_direction("right")
 
-            settings.surface.fill((255, 255, 255))
+            config.surface.fill((255, 255, 255))
+
+            room.present.update()
 
             player.player.update_movement(self.direction_pressed)
             player.player.render()
 
+
             # print(player.player.pos_x, player.player.pos_y)
             # print(player.player.pos_x/global_vars.tile_size, player.player.pos_y/global_vars.tile_size)
 
-            print(self.direction_pressed, player.player.direction, player.player.next_direction)
+            # print(self.direction_pressed, player.player.direction, player.player.next_direction)
 
             pygame.display.update()
-            self.clock.tick(settings.fps)
+            self.clock.tick(config.fps)
         pygame.quit()
 
 

@@ -3,17 +3,16 @@ import config
 import tile
 
 
-class Map:
+class TimeZone:
     def __init__(self):
-        self.tileset = tile.TileSet(10, 10)
+        self.tileset = tile.TileSet('map_test')
 
-    def update(self):
+    def render(self):
         self.tileset.update_map()
         self.tileset.render()
 
     def collision(self, x, y):
         return self.tileset.collision_map[x][y]
 
-
-past = Map()
-present = Map()
+past = TimeZone()
+present = TimeZone()

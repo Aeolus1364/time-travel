@@ -2,7 +2,7 @@ import pygame
 import player
 import config
 import tile
-import room
+import timezone
 
 pygame.init()
 
@@ -68,16 +68,16 @@ class Main:
 
             config.surface.fill((255, 255, 255))
 
-            room.present.update()
-
             player.player.update_movement(self.direction_pressed)
             player.player.render()
+
+            timezone.present.render()
 
 
             # print(player.player.pos_x, player.player.pos_y)
             # print(player.player.pos_x/global_vars.tile_size, player.player.pos_y/global_vars.tile_size)
 
-            # print(self.direction_pressed, player.player.direction, player.player.next_direction)
+            print(self.direction_pressed, player.player.direction, player.player.next_direction)
 
             pygame.display.update()
             self.clock.tick(config.fps)

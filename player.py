@@ -2,7 +2,7 @@ import pygame
 import tile
 import config
 import math
-import room
+import timezone
 
 
 class Player:
@@ -33,17 +33,13 @@ class Player:
             self.next_direction = "none"
 
     def update_movement(self, direction_pressed):
-        print((self.pos_x / config.tile_size), (self.pos_y / config.tile_size))
-        print(self.x, self.y)
-        print(self.pos_x, self.pos_y)
-
         if self.direction == "up":
             self.vel_y = -self.speed
-            if self.pos_y % config.tile_size == 0:
-                if direction_pressed != "up":
+            if self.pos_y % config.tile_size == 0:  # if player is on a tile
+                if direction_pressed != "up":  # if direction changes, stop velocity, and start next direction
                     self.direction = self.next_direction
                     self.vel_y = 0
-                if room.present.collision(self.x, self.y - 1) is True:
+                if timezone.present.collision(self.x, self.y - 1) is True:  # if collision occurs, stop velocity, start next direction
                     self.direction = self.next_direction
                     self.vel_y = 0
 
@@ -53,7 +49,7 @@ class Player:
                 if direction_pressed != "down":
                     self.direction = self.next_direction
                     self.vel_y = 0
-                if room.present.collision(self.x, self.y + 1) is True:
+                if timezone.present.collision(self.x, self.y + 1) is True:
                     self.direction = self.next_direction
                     self.vel_y = 0
 
@@ -63,7 +59,7 @@ class Player:
                 if direction_pressed != "left":
                     self.direction = self.next_direction
                     self.vel_x = 0
-                if room.present.collision(self.x - 1, self.y) is True:
+                if timezone.present.collision(self.x - 1, self.y) is True:
                     self.direction = self.next_direction
                     self.vel_x = 0
 
@@ -73,7 +69,7 @@ class Player:
                 if direction_pressed != "right":
                     self.direction = self.next_direction
                     self.vel_x = 0
-                if room.present.collision(self.x + 1, self.y) is True:
+                if timezone.present.collision(self.x + 1, self.y) is True:
                     self.direction = self.next_direction
                     self.vel_x = 0
 
@@ -85,5 +81,6 @@ class Player:
 
     def render(self):
         pygame.draw.rect(config.surface, (0, 0, 0), (self.pos_x, self.pos_y, config.tile_size, config.tile_size))
+
 
 player = Player()

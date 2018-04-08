@@ -14,37 +14,44 @@ class OldTile:
         pygame.draw.rect(config.surface, (0, 255, 0), (self.x * config.tile_size, self.y * config.tile_size, config.tile_size, config.tile_size))
 
 
-class Tile(pygame.sprite.Sprite):
+class Tile:
     def __init__(self, x, y, image, collideable):
-        super(Tile, self).__init__()
-        self.image = image
-        self.rect = pygame.Rect(x * config.tile_size, y * config.tile_size, config.tile_size, config.tile_size)
-
-        self.collideable = collideable
-
         self.x = x
         self.y = y
+
+        self.image = image
+        self.collideable = collideable
+
+    def interact(self):
+        if self.collideable is True:
+            self.collideable = False
+        elif self.collideable is False:
+            self.collideable = True
+
+    def rect(self):
+        return pygame.Rect(self.x * config.tile_size, self.y * config.tile_size, config.tile_size, config.tile_size)
 
 
 class TileSet:
     def __init__(self, file):
-        self.group = pygame.sprite.Group()
-        self.collision_map = [[]]
+        self.tiles = [[]]
 
         for i in range(config.map_x):  # generates empty collision map to be populated by update_map method
-            self.collision_map.append([])
+            self.tiles.append([])
             for j in range(config.map_y):
-                self.collision_map[i].append(False)
+                self.tiles[i].append(None)
 
         self.load(file)
-        self.update_map()
+
+    def interact(self, x, y):
+        self.tiles[x][y].interact()
 
     def render(self):
-        self.group.draw(config.surface)
-
-    def update_map(self):
-        for i in self.group.sprites():
-            self.collision_map[i.x][i.y] = i.collideable
+        for i in self.tiles:
+            for j in i:
+                if j:
+                    print(j)
+                    config.surface.blit(j.image, j.rect())
 
     def load(self, file):  # loads a map from a text file
         file = open(file)
@@ -61,11 +68,12 @@ class TileSet:
 
             for x in text_x:
                 if x == "#":
-                    self.group.add(Tile(x_cursor, y_cursor, source.test_img, True))
+                    self.tiles[x_cursor][y_cursor] = Tile(x_cursor, y_cursor, source.test_img, True)
 
                 x_cursor += 1
             y_cursor += 1
 
+        print(self.tiles)
 
 
 

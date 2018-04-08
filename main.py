@@ -22,6 +22,7 @@ class Main:
         while self.running:
 
             for event in pygame.event.get():
+
                 if event.type == pygame.QUIT:
                     self.running = False
 
@@ -44,6 +45,9 @@ class Main:
 
                     if event.key == pygame.K_ESCAPE:
                         config.surface = pygame.display.set_mode((config.display_x, config.display_y))
+
+                    if event.key == pygame.K_SPACE:
+                        timezone.present.interact(player.player.x, player.player.y - 1)
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_w:
@@ -68,16 +72,13 @@ class Main:
 
             config.surface.fill((255, 255, 255))
 
+            timezone.present.render()
+
             player.player.update_movement(self.direction_pressed)
             player.player.render()
 
-            timezone.present.render()
-
-
-            # print(player.player.pos_x, player.player.pos_y)
-            # print(player.player.pos_x/global_vars.tile_size, player.player.pos_y/global_vars.tile_size)
-
-            print(self.direction_pressed, player.player.direction, player.player.next_direction)
+            # print(self.direction_pressed, player.player.direction, player.player.next_direction)
+            print(player.player.x, player.player.y)
 
             pygame.display.update()
             self.clock.tick(config.fps)

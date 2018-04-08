@@ -8,11 +8,16 @@ class TimeZone:
         self.tileset = tile.TileSet('map_test')
 
     def render(self):
-        self.tileset.update_map()
         self.tileset.render()
 
     def collision(self, x, y):
-        return self.tileset.collision_map[x][y]
+        if self.tileset.tiles[x][y]:
+            return self.tileset.tiles[x][y].collideable
+        else:
+            return False
+
+    def interact(self, x, y):
+        self.tileset.interact(x, y)
 
 past = TimeZone()
 present = TimeZone()
